@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        table {
+            text-align: center;
+            margin-left: 10%;
+            margin-right: 50%;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular',
+                'Lucida Grande', 'Lucida Sans Unicode',
+                Geneva, Verdana, sans-serif;
+        }
+
+        input,
+        button {
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular',
+                'Lucida Grande', 'Lucida Sans Unicode',
+                Geneva, Verdana, sans-serif;
+        }
+
+        .error {
+            border: 1px solid red;
+        }
+
+        #message {
+            color: red;
+            margin-top: 10px;
+        }
+        #reservationDetails{
+          color: green;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div align="center">
+        <h1>Booking place for your dinner!</h1>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" size="22" onblur="validateName()">
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" size="22" onblur="validatePhoneNumber()">
+    </div>
+    
+    <div align="margin-left">
+        <h2>Select a time</h2>
+        <input type="radio" id="first-am" name="seating" value="5 AM" checked>
+        <label for="first-am">05:00 AM</label>
+        <input type="radio" id="first-pm" name="seating" value="5 PM">
+        <label for="first-pm">05:00 PM</label><br>
+
+        <input type="radio" id="second-am" name="seating" value="6 AM">
+        <label for="second-am">06:00 AM</label>
+        <input type="radio" id="second-pm" name="seating" value="6 PM">
+        <label for="second-pm">06:00 PM</label><br>
+
+        <input type="radio" id="third-am" name="seating" value="7 AM" >
+        <label for="third-am">07:00 AM</label>
+        <input type="radio" id="third-pm" name="seating" value="7 PM">
+        <label for="third-pm">07:00 PM</label><br>
+
+        <input type="radio" id="fourth-am" name="seating" value="8 AM">
+        <label for="fourth-am">08:00 AM</label>
+        <input type="radio" id="fourth-pm" name="seating" value="8 PM">
+        <label for="fourth-pm">08:00 PM</label><br>
+
+    
+        <h2>What would you like to have with us?</h2>
+        <input type="checkbox" id="starters" name="starters" value="Starters">
+        <label for="starters">Starters</label><br>
+        <input type="checkbox" id="mainCourse" name="mainCourse" value="Main Course">
+        <label for="mainCourse">Main Course</label><br>
+        <input type="checkbox" id="desserts" name="desserts" value="Desserts">
+        <label for="desserts">Desserts</label><br>
+        <input type="checkbox" id="drinks" name="drinks" value="Drinks">
+        <label for="drinks">Drinks</label>
+    </div>
+    <button onclick="submitForm()" id="submit" disabled>
+        Submit </button>
+    <div id="message"></div>
+    <h1><div id="reservationDetails" ></div></h1>
+
+
+    <script>
+        function validateName() {
+            var nameInput = document.getElementById("name");
+            var nameValue = nameInput.value.trim();
+
+            if (nameValue === "") {
+                displayError("Name is empty", nameInput);
+            } else if (!nameValue.includes(" ")) {
+                displayError("First and last names are required", nameInput);
+            } else {
+                clearError(nameInput);
+            }
+        }
+
+        function validatePhoneNumber() {
+            var phoneInput = document.getElementById("phone");
+            var phoneValue = phoneInput.value.trim();
+
+            if (phoneValue === "") {
+                displayError("Phone number is empty", phoneInput);
+            } else if (!/^\d/.test(phoneValue)) {
+                displayError("Phone number must start with numbers", phoneInput);
+            } else if (phoneValue.length !== 6) {
+                displayError("Phone numbers must have exactly 6 characters", phoneInput);
+            } else {
+                clearError(phoneInput);
+            }
+        }
+
+        function displayError(message, inputElement) {
+            inputElement.classList.add("error");
+            document.getElementById("message").innerHTML = message;
+            document.getElementById("submit").disabled = true;
+        }
+
+        function clearError(inputElement) {
+            inputElement.classList.remove("error");
+            document.getElementById("message").innerHTML = "";
+            checkFormValidity();
+        }
+
+        function checkFormValidity() {
+            var nameInput = document.getElementById("name");
+            var phoneInput = document.getElementById("phone");
+            var submitButton = document.getElementById("submit");
+
+            if (!nameInput.classList.contains("error") || !phoneInput.classList.contains("error")) {
+                submitButton.disabled = false;
+            }
+        }
+
+        function submitForm() {
+            var name = document.getElementById("name").value;
+            var phone = document.getElementById("phone").value;
+            var time = document.querySelector('input[name="seating"]:checked').value;
+            var starters = document.getElementById("starters").checked ? "Starters" : "";
+            var mainCourse = document.getElementById("mainCourse").checked ? "Main Course" : "";
+            var desserts = document.getElementById("desserts").checked ? "Desserts" : "";
+            var drinks = document.getElementById("drinks").checked ? "Drinks" : "";
+
+            var reservationDetails = "Submit Reservation for: " + name + " Phone: (" + phone + ") at " + time;
+            reservationDetails += starters ? " " + starters : "";
+            reservationDetails += mainCourse ? " " + mainCourse : "";
+            reservationDetails += desserts ? " " + desserts : "";
+            reservationDetails += drinks ? " " + drinks : "";
+            document.getElementById("reservationDetails").innerHTML = reservationDetails;
+
+
+            
+        }
+    </script>
+</body>
+
+</html>
